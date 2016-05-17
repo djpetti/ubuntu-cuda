@@ -1,7 +1,7 @@
-FROM ubuntu:16.04
+FROM ubuntu:14.04
 MAINTAINER Daniel Petti
 
-RUN apt-get update && apt-get install -y build-essential kmod g++-4.9
+RUN apt-get update && apt-get install -y build-essential kmod
 RUN apt-get --purge remove -y nvidia*
 
 ADD http://us.download.nvidia.com/XFree86/Linux-x86_64/361.42/NVIDIA-Linux-x86_64-361.42.run /tmp/nvidia/
@@ -19,16 +19,3 @@ RUN touch /etc/ld.so.conf.d/cuda.conf
 
 # Cleanup installer files.
 RUN rm -rf /temp/*
-
-# Make CUDA actually work by switching to GCC 4.9. (5.x is unsupported.)
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 20
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 10
-
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 20
-RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 10
-
-RUN update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
-RUN update-alternatives --set cc /usr/bin/gcc
-
-RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
-RUN update-alternatives --set c++ /usr/bin/g++
